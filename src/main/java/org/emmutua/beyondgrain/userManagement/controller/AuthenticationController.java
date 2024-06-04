@@ -1,6 +1,7 @@
 package org.emmutua.beyondgrain.userManagement.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.emmutua.beyondgrain.response.Response;
 import org.emmutua.beyondgrain.userManagement.dtos.LoginRequest;
 import org.emmutua.beyondgrain.userManagement.dtos.LoginResponse;
 import org.emmutua.beyondgrain.userManagement.dtos.RegisterRequest;
@@ -18,13 +19,13 @@ public class AuthenticationController {
     private final AuthService authService;
 
     @PostMapping("/create_user")
-    ResponseEntity<String> createNewUser(@RequestBody RegisterRequest registerRequest){
+    ResponseEntity<Response> createNewUser(@RequestBody RegisterRequest registerRequest){
         var response = authService.createUser(registerRequest);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/login_user")
-    ResponseEntity<LoginResponse> login_user(@RequestBody LoginRequest loginRequest){
+    ResponseEntity<Response> login_user(@RequestBody LoginRequest loginRequest){
         var response = authService.loginUser(loginRequest);
         return ResponseEntity.ok(response);
     }

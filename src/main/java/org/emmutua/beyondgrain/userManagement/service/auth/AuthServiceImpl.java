@@ -2,6 +2,9 @@ package org.emmutua.beyondgrain.userManagement.service.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.emmutua.beyondgrain.config.jwt.JwtService;
+import org.emmutua.beyondgrain.exception.CustomException;
+import org.emmutua.beyondgrain.response.Response;
+import org.emmutua.beyondgrain.response.SuccessResponse;
 import org.emmutua.beyondgrain.userManagement.dtos.LoginRequest;
 import org.emmutua.beyondgrain.userManagement.dtos.LoginResponse;
 import org.emmutua.beyondgrain.userManagement.dtos.RegisterRequest;
@@ -25,7 +28,7 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
 
     @Override
-    public String createUser(RegisterRequest registerRequest) {
+    public Response createUser(RegisterRequest registerRequest) {
         try {
             UserType userType;
             if (registerRequest.getRole().equals(UserType.BUYER.name())) {
@@ -33,7 +36,11 @@ public class AuthServiceImpl implements AuthService {
             } else if (registerRequest.getRole().equals(UserType.SELLER.name())) {
                 userType = UserType.SELLER;
             } else {
-                throw new RuntimeException("Invalid role");
+                throw new CustomException("Invalid role");
+            }
+
+            if (userRepository.existsAppUserByEmailOrIdNoOrPhone(registerRequest.getEmail(), registerRequest.getIdNumber(), registerRequest.getPhoneNumber())) {
+                throw new CustomException("User already exists, Please login to add a new role as buyer or seller");
             }
 
             AppUser appUser = AppUser.builder()
@@ -45,14 +52,14 @@ public class AuthServiceImpl implements AuthService {
                     .role(userType)
                     .build();
             userRepository.save(appUser);
-            return "User created";
+            return SuccessResponse.success("Account created", appUser);
         } catch (Exception e) {
-            throw new RuntimeException("Failed to save user");
+            throw new CustomException(e.getMessage());
         }
     }
 
     @Override
-    public LoginResponse loginUser(LoginRequest loginRequest) {
+    public Response loginUser(LoginRequest loginRequest) {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -61,7 +68,7 @@ public class AuthServiceImpl implements AuthService {
                     )
             );
             var loggedInUser = userRepository.findByEmail(loginRequest.getEmail())
-                    .orElseThrow(() -> new IllegalArgumentException("Invalid username or password"));
+                    .orElseThrow(() -> new CustomException("Invalid username or password"));
             var jwtToken = jwtService.generateToken(loggedInUser);
             Token token = Token.builder()
                     .appUser(loggedInUser)
@@ -71,12 +78,13 @@ public class AuthServiceImpl implements AuthService {
                     .build();
             tokenRepository.save(token);
 
-            return LoginResponse.builder()
+            var loginResponse = LoginResponse.builder()
                     .token(jwtToken)
                     .userRole(loggedInUser.getRole().name())
                     .build();
+            return SuccessResponse.success("Logged in", loginResponse);
         } catch (Exception exception) {
-            throw new RuntimeException("Failed to login user");
+            throw new CustomException(exception.getMessage());
         }
     }
 }
