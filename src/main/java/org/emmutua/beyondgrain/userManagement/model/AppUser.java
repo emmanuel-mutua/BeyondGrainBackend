@@ -28,7 +28,7 @@ public class AppUser implements UserDetails {
     private String idNo;
     private UserType role;
     private boolean isEnabled = false;
-    @DBRef
+    @DBRef(lazy = true)
     private List<Token> tokens;
 
     @Override

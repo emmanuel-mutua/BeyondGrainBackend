@@ -11,7 +11,8 @@ public class SuccessResponse extends Response {
     private Object data;
     public SuccessResponse() {}
     public SuccessResponse(boolean success,String message, Object data) {
-        super(success,message);
+        this.success = success;
+        this.message = message;
         this.data = data;
     }
     public static <T> SuccessResponse success(String message, T data) {

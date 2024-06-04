@@ -18,6 +18,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
@@ -85,6 +87,33 @@ public class AuthServiceImpl implements AuthService {
             return SuccessResponse.success("Logged in", loginResponse);
         } catch (Exception exception) {
             throw new CustomException(exception.getMessage());
+        }
+    }
+
+    @Override
+    public List<AppUser> getBuyers() {
+        try {
+            return userRepository.findAllByRole(UserType.BUYER);
+        }catch (Exception e) {
+            throw new CustomException(e.getMessage());
+        }
+    }
+
+    @Override
+    public List<AppUser> getSellers() {
+        try {
+            return userRepository.findAllByRole(UserType.SELLER);
+        }catch (Exception e) {
+            throw new CustomException(e.getMessage());
+        }
+    }
+
+    @Override
+    public List<AppUser> getAllUsers() {
+        try {
+            return userRepository.findAll();
+        }catch (Exception e) {
+            throw new CustomException(e.getMessage());
         }
     }
 }
