@@ -15,6 +15,7 @@ import org.emmutua.beyondgrain.userManagement.model.UserType;
 import org.emmutua.beyondgrain.userManagement.repositories.UserRepository;
 import org.emmutua.beyondgrain.userManagement.token.Token;
 import org.emmutua.beyondgrain.userManagement.token.TokenRepository;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -95,9 +96,9 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public List<AppUserDto> getBuyers() {
+    public List<AppUserDto> getBuyers(Pageable pageable) {
         try {
-            return userRepository.findAllByRole(UserType.BUYER).stream().map(
+            return userRepository.findAllByRole(UserType.BUYER,pageable).stream().map(
                     objectMapper::toAppUserDto
             ).collect(Collectors.toList());
         } catch (Exception e) {
@@ -106,9 +107,9 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public List<AppUserDto> getSellers() {
+    public List<AppUserDto> getSellers(Pageable pageable) {
         try {
-            return userRepository.findAllByRole(UserType.SELLER).stream().map(
+            return userRepository.findAllByRole(UserType.SELLER, pageable).stream().map(
                     objectMapper::toAppUserDto
             ).collect(Collectors.toList());
         } catch (Exception e) {
@@ -117,9 +118,9 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public List<AppUserDto> getAllUsers() {
+    public List<AppUserDto> getAllUsers(Pageable pageable) {
         try {
-            return userRepository.findAll().stream().map(
+            return userRepository.findAll(pageable).stream().map(
                     objectMapper::toAppUserDto
             ).collect(Collectors.toList());
         } catch (Exception e) {
