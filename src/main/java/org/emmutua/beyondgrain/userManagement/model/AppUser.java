@@ -36,6 +36,10 @@ public class AppUser implements UserDetails {
         return List.of();
     }
 
+    public String  get_id() {
+        return _id.toHexString();
+    }
+
     @Override
     public String getPassword() {
         return this.password;

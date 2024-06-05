@@ -3,6 +3,8 @@ package org.emmutua.beyondgrain.userManagement.service.auth;
 import lombok.RequiredArgsConstructor;
 import org.emmutua.beyondgrain.config.jwt.JwtService;
 import org.emmutua.beyondgrain.exception.CustomException;
+import org.emmutua.beyondgrain.mapper.AppUserDto;
+import org.emmutua.beyondgrain.mapper.ObjectMapper;
 import org.emmutua.beyondgrain.response.Response;
 import org.emmutua.beyondgrain.response.SuccessResponse;
 import org.emmutua.beyondgrain.userManagement.dtos.LoginRequest;
@@ -19,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +31,7 @@ public class AuthServiceImpl implements AuthService {
     private final TokenRepository tokenRepository;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final ObjectMapper objectMapper;
 
     @Override
     public Response createUser(RegisterRequest registerRequest) {
@@ -91,28 +95,34 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public List<AppUser> getBuyers() {
+    public List<AppUserDto> getBuyers() {
         try {
-            return userRepository.findAllByRole(UserType.BUYER);
-        }catch (Exception e) {
+            return userRepository.findAllByRole(UserType.BUYER).stream().map(
+                    objectMapper::toAppUserDto
+            ).collect(Collectors.toList());
+        } catch (Exception e) {
             throw new CustomException(e.getMessage());
         }
     }
 
     @Override
-    public List<AppUser> getSellers() {
+    public List<AppUserDto> getSellers() {
         try {
-            return userRepository.findAllByRole(UserType.SELLER);
-        }catch (Exception e) {
+            return userRepository.findAllByRole(UserType.SELLER).stream().map(
+                    objectMapper::toAppUserDto
+            ).collect(Collectors.toList());
+        } catch (Exception e) {
             throw new CustomException(e.getMessage());
         }
     }
 
     @Override
-    public List<AppUser> getAllUsers() {
+    public List<AppUserDto> getAllUsers() {
         try {
-            return userRepository.findAll();
-        }catch (Exception e) {
+            return userRepository.findAll().stream().map(
+                    objectMapper::toAppUserDto
+            ).collect(Collectors.toList());
+        } catch (Exception e) {
             throw new CustomException(e.getMessage());
         }
     }

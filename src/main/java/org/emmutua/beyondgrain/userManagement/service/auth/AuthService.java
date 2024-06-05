@@ -1,5 +1,6 @@
 package org.emmutua.beyondgrain.userManagement.service.auth;
 
+import org.emmutua.beyondgrain.mapper.AppUserDto;
 import org.emmutua.beyondgrain.response.Response;
 import org.emmutua.beyondgrain.userManagement.dtos.LoginRequest;
 import org.emmutua.beyondgrain.userManagement.dtos.RegisterRequest;
@@ -13,8 +14,8 @@ public interface AuthService {
 
     Response loginUser(LoginRequest loginRequest);
 
-    List<AppUser> getBuyers();
-    List<AppUser> getSellers();
+    List<AppUserDto> getBuyers();
+    List<AppUserDto> getSellers();
 
-    List<AppUser> getAllUsers();
+    List<AppUserDto> getAllUsers();
 }
