@@ -1,5 +1,6 @@
 package org.emmutua.beyondgrain.mapper;
 
+import org.bson.types.ObjectId;
 import org.emmutua.beyondgrain.userManagement.model.AppUser;
 import org.springframework.stereotype.Service;
 
@@ -15,5 +16,9 @@ public class ObjectMapper {
                 .role(appUser.getRole())
                 .isEnabled(appUser.isEnabled())
                 .build();
+    }
+
+    public ObjectId toObjectId(String hexString){
+        return new ObjectId(hexString);
     }
 }
