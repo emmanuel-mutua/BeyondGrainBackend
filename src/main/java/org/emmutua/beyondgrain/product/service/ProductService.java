@@ -11,9 +11,9 @@ public interface ProductService {
 
     List<Product> getSorted();
 
-    Response deleteProduct(String productId);
+    Response deleteProduct(Long productId);
 
-    Product getProductById(String productId);
+    Product getProductById(Long productId);
 
-    List<Product> getUserProducts(String userId);
+    List<Product> getUserProducts(Long userId);
 }

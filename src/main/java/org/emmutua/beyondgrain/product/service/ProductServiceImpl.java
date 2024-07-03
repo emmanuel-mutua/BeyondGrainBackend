@@ -24,9 +24,9 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Response uploadProduct(ProductRequest productRequest) {
         try {
-            AppUser appUser = userRepository.findById(productRequest.getUserID()).orElseThrow();
+            AppUser appUser = userRepository.findById(productRequest.getUserId()).orElseThrow();
             //save user to a product
-            Product product = Product.builder().quantityInBags(productRequest.getQuantityInBags()).price(productRequest.getPrice()).discount(productRequest.getDiscount()).productStatus(ProductStatus.PENDING).imageUrls(productRequest.getImageUrl()).build();
+            Product product = Product.builder().quantityInBags(productRequest.getQuantityInBags()).price(productRequest.getPrice()).discount(productRequest.getDiscount()).productStatus(ProductStatus.PENDING).imageUrls(productRequest.getImageUrl().get(0)).build();
             product.setAppUser(appUser);
             //save product
             productRepository.save(product);
@@ -44,23 +44,23 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Response deleteProduct(String productId) {
+    public Response deleteProduct(Long productId) {
         return null;
     }
 
     @Override
-    public Product getProductById(String productId) {
+    public Product getProductById(Long productId) {
         try {
-            return productRepository.findById(objectMapper.toObjectId(productId)).orElseThrow();
+            return productRepository.findById(productId).orElseThrow();
         } catch (Exception e) {
             throw new CustomException(e.getMessage());
         }
     }
 
     @Override
-    public List<Product> getUserProducts(String userId) {
+    public List<Product> getUserProducts(Long userId) {
         try {
-            AppUser appUser = userRepository.findById(objectMapper.toObjectId(userId)).orElseThrow();
+            AppUser appUser = userRepository.findById(userId).orElseThrow();
             return productRepository.findAllByAppUser(appUser);
         } catch (Exception e) {
             throw new CustomException(e.getMessage());

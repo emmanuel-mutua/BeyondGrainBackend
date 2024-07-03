@@ -11,7 +11,7 @@ import org.emmutua.beyondgrain.userManagement.model.UserType;
 @NoArgsConstructor
 @Builder
 public class AppUserDto {
-    private String id;
+    private Long id;
     private String username;
     private String email;
     private String phone;

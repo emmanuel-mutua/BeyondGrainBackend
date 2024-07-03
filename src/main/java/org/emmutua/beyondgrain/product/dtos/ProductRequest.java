@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.bson.types.ObjectId;
 
 import java.util.List;
 
@@ -13,13 +12,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductRequest {
-    private String userId;
+    private Long userId;
     private Integer quantityInBags;
     private Double price;
     private Double discount;
     private List<String> imageUrl;
-
-    public ObjectId getUserID() {
-        return new ObjectId(this.userId);
-    }
 }

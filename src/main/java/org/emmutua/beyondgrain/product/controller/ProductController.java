@@ -26,17 +26,17 @@ public class ProductController {
         return ResponseEntity.ok(response);
     }
     @PostMapping("/getProductById/{productId}")
-    ResponseEntity<Product> getProductById(@PathVariable String productId){
+    ResponseEntity<Product> getProductById(@PathVariable Long productId){
         var response = productService.getProductById(productId);
         return ResponseEntity.ok(response);
     }
     @PostMapping("/getProductByUserId/{userId}")
-    ResponseEntity<List<Product>> getUserProducts(@PathVariable String userId){
+    ResponseEntity<List<Product>> getUserProducts(@PathVariable Long userId){
         var response = productService.getUserProducts(userId);
         return ResponseEntity.ok(response);
     }
     @PostMapping("/deleteProduct/{productId}")
-    ResponseEntity<Response> deleteProduct(@PathVariable String productId){
+    ResponseEntity<Response> deleteProduct(@PathVariable Long productId){
         var response = productService.deleteProduct(productId);
         return ResponseEntity.ok(response);
     }

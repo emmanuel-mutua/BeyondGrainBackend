@@ -1,10 +1,22 @@
 spring:
   application:
     name: BeyondGrain
-  data:
-    mongodb:
-      uri: mongodb+srv://itsdevem:itsdevem@beyond-grain.bmvh4v8.mongodb.net/beyond-grain
-      database: beyond-grain-db
+  datasource:
+#    url: jdbc:postgresql://localhost:5432/beyondgrain #local
+    url: jdbc:postgresql://root:rnLsO1GPrJ1uhjqXVwNuSlsu3MQm2LYx@dpg-cq2jc4bv2p9s73eu7bm0-a.oregon-postgres.render.com/beyond_grain_db #prod
+    username: root
+    password: rnLsO1GPrJ1uhjqXVwNuSlsu3MQm2LYx
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    database: postgresql
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
 application:
   security:
     jwt:

@@ -1,21 +1,27 @@
 package org.emmutua.beyondgrain.userManagement.token;
 
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import org.bson.types.ObjectId;
+import lombok.NoArgsConstructor;
 import org.emmutua.beyondgrain.userManagement.model.AppUser;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document
+@Entity
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Token {
-    private ObjectId _id;
+    @Id
+    @SequenceGenerator(name = "token_sequence", sequenceName = "token_sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "token_sequence")
+    private Long _id;
     private String token;
     private TokenType tokenType = TokenType.BEARER;
     public boolean revoked;
     public boolean expired;
-    @DBRef(lazy = true)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id",referencedColumnName = "userId")
     public AppUser appUser;
 }
