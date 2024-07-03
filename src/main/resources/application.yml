@@ -3,7 +3,8 @@ spring:
     name: BeyondGrain
   datasource:
 #    url: jdbc:postgresql://localhost:5432/beyondgrain #local
-    url: jdbc:postgresql://root:rnLsO1GPrJ1uhjqXVwNuSlsu3MQm2LYx@dpg-cq2jc4bv2p9s73eu7bm0-a/beyond_grain_db #prod
+#    url: jdbc:postgresql://dpg-cq2jc4bv2p9s73eu7bm0-a/beyond_grain_db #prod_internal
+    url: jdbc:postgresql://dpg-cq2jc4bv2p9s73eu7bm0-a.oregon-postgres.render.com:5432/beyond_grain_db
     username: root
     password: rnLsO1GPrJ1uhjqXVwNuSlsu3MQm2LYx
     driver-class-name: org.postgresql.Driver
